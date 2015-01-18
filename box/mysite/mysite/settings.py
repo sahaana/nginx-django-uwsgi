@@ -36,6 +36,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'mysite',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -58,8 +59,12 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'mysite',
+        'USER': 'ramstuff',
+        'PASSWORD':'12345',
+        'HOST':'',
+        'PORT':'',
     }
 }
 
@@ -82,3 +87,6 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = "/Users/meep_me/Desktop/ram_stuff/combining/box/mysite/static"
+MEDIA_URL = '/media/'
+MEDIA_ROOT = "/Users/meep_me/Desktop/ram_stuff/combining/box/mysite/media"
+

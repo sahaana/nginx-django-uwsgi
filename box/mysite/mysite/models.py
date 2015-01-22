@@ -18,4 +18,7 @@ def post_upload(request):
                                      created_at=datetime.utcnow())
         # No need to call post.save() at this point -- it's already saved.
         return HttpResponseRedirect(reverse('post_detail', kwargs={'post_id': post.id}))
+
+class Document(m.Model):
+    docfile = m.FileField(upload_to='documents/%Y/%m/%d')
     

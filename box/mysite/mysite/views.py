@@ -1,11 +1,12 @@
-from mysite.forms import PostForm
-from django.shortcuts import render
+from mysite.forms import PostForm, DocumentForm
+from django.shortcuts import render, render_to_response
 from mysite import models as m
 from django.http import HttpResponseRedirect, HttpResponse, Http404 
 from datetime import datetime, timedelta
 from django.core.urlresolvers import reverse
 from django.views import generic
 from django.shortcuts import redirect
+from django.template import RequestContext
  
 
 def index(request):
@@ -35,3 +36,15 @@ def post_form_upload(request):
     return render(request, 'post/post_form_upload.html', {
         'form': form,
     })
+
+def list(request):
+    if request.method == 'POST':
+        form = DocumentForm(request.POST, request.FILES) #why taking in 2 things
+        if form.is_valid():
+            newdoc = m.Document(docfile = request.FILES['docfile'])
+            newdoc.save()
+            return HttpResponseRedirect(reverse('list'))
+    else:
+        form = DocumentForm()
+    documents = m.Document.objects.all()
+    return render_to_response('post/list.html', {'documents':documents,'form':form}, context_instance=RequestContext(request))

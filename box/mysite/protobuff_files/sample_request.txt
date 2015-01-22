@@ -1,0 +1,40 @@
+id: "Mv\2005\000\017.\001\n\345\177\307X\200M8"
+ip: "\314j\310"
+user_agent: "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US) AppleWebKit/534.13 (KHTML, like Gecko) Chrome/9.0.597.107 Safari/534.13,gzip"
+url: "http://www.example.com/"
+detected_language: "en"
+detected_vertical {
+  id: 22
+  weight: 0.67789277
+}
+detected_vertical {
+  id: 355
+  weight: 0.32210726
+}
+adslot {
+  id: 1
+  width: 300
+  height: 250
+  excluded_attribute: 7
+  excluded_attribute: 22
+  matching_ad_data {
+    adgroup_id: 3254984134
+    minimum_cpm_micros: 2000000
+  }
+  matching_ad_data {
+    adgroup_id: 2646216548
+    minimum_cpm_micros: 2000000
+  }
+  targetable_channel: "all pages,middle right"
+  publisher_settings_list_id: 4985794913155998850
+  slot_visibility: BELOW_THE_FOLD
+}
+is_test: false
+cookie_version: 1
+google_user_id: "CAESEIcS1pC2TBvb-4SLDjMqsY9"
+seller_network_id: 1
+publisher_settings_list_id: 42
+vertical_dictionary_version: 2
+timezone_offset: -300
+cookie_age_seconds: 7685804
+geo_criteria_id: 1001193

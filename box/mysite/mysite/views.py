@@ -17,6 +17,7 @@ from mysite.settings import MEDIA_ROOT
 import requests
 from google.protobuf.text_format import Merge
 import realtime_bidding_pb2 as rtb
+import binascii
  
 
 def index(request):
@@ -79,8 +80,12 @@ def spit(request):
         Merge(bid, a)
         payload = a.SerializeToString()
         url = "http://test.bidr.io/bid/adx"
-        r = requests.post(url,payload).content
+        r = requests.post(url,payload)
+        bid = r.content
+        if r.ok:
+            #can only handle 45 bytes at a time
+            r = bin2a_uu(bid)
     except AssertionError:
-        r = "No Prior Bid Requests"
-    return render_to_response('post/spit.html', {'documents':r,'form':form}, context_instance=RequestContext(request))
+        bid = "No Prior Bid Requests"
+    return render_to_response('post/spit.html', {'documents':bid,'form':form}, context_instance=RequestContext(request))
 

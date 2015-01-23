@@ -1,3 +1,7 @@
+import sys
+sys.path.insert(0, '/Users/meep_me/Desktop/ram_stuff/combining/box/mysite/protobuff_files')
+
+
 from mysite.forms import PostForm, DocumentForm
 from django.shortcuts import render, render_to_response
 from mysite import models as m
@@ -7,6 +11,12 @@ from django.core.urlresolvers import reverse
 from django.views import generic
 from django.shortcuts import redirect
 from django.template import RequestContext
+from django.core.exceptions import ObjectDoesNotExist
+from mysite.settings import MEDIA_ROOT
+
+import requests
+from google.protobuf.text_format import Merge
+import realtime_bidding_pb2 as rtb
  
 
 def index(request):
@@ -39,12 +49,38 @@ def post_form_upload(request):
 
 def list(request):
     if request.method == 'POST':
-        form = DocumentForm(request.POST, request.FILES) #why taking in 2 things
+        form = DocumentForm(request.POST, request.FILES) #why taking in 2 things: .FILES is how data gets bound
         if form.is_valid():
             newdoc = m.Document(docfile = request.FILES['docfile'])
+            #request.FILES['docfile'].read()
             newdoc.save()
             return HttpResponseRedirect(reverse('list'))
     else:
         form = DocumentForm()
     documents = m.Document.objects.all()
     return render_to_response('post/list.html', {'documents':documents,'form':form}, context_instance=RequestContext(request))
+
+def spit(request):
+    if request.method == 'POST':
+        form = DocumentForm(request.POST, request.FILES) #why taking in 2 things: .FILES is how data gets bound
+        if form.is_valid():
+            newdoc = m.Document(docfile = request.FILES['docfile'])
+            #request.FILES['docfile'].read()
+            newdoc.save()
+            return HttpResponseRedirect(reverse('spit'))
+    else:
+        form = DocumentForm()
+    try:
+        documents = m.Document.objects.all()[m.Document.objects.count()-1]
+        f = open(MEDIA_ROOT+'/'+str(documents.docfile))
+        bid = f.read()#.replace('\n', '<br/>')
+        f.close()
+        a = rtb.BidRequest()
+        Merge(bid, a)
+        payload = a.SerializeToString()
+        url = "http://test.bidr.io/bid/adx"
+        r = requests.post(url,payload).content
+    except AssertionError:
+        r = "No Prior Bid Requests"
+    return render_to_response('post/spit.html', {'documents':r,'form':form}, context_instance=RequestContext(request))
+

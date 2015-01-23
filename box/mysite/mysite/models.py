@@ -21,4 +21,10 @@ def post_upload(request):
 
 class Document(m.Model):
     docfile = m.FileField(upload_to='documents/%Y/%m/%d')
-    
+    #created_at = m.DateTimeField('Datetime created') 
+
+def display(self):
+    with open(self.text.path) as f:
+        return f.read().replace('\n', '<br/>')
+
+
